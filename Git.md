@@ -1,6 +1,5 @@
 # Git备忘录
 
-d6d004898587a25b023e83658c803d3e745e0b03c005a36765a78a2f9abf8b5ffdacc72fea1982a1c19f73cab2cd638c552c277fa3aff054a04bc0b09a741ec9
 
 ## 引入
 
@@ -74,7 +73,7 @@ git config --global --unset https.proxy
 ---
 ## Git 分支和远程操作指南
 
-## git clone
+### git clone
 
 把项目拉下来，~~这是最好用的命令~~
 
@@ -86,64 +85,64 @@ git config --global --unset https.proxy
 - **查看本地分支**：
 
 ```bash
-    git branch
+git branch
 ```
 
-    显示本地所有分支。
+ 显示本地所有分支。
 
 - **创建新分支**：
 
 ```bash
-    git branch <branch-name>
+git branch <branch-name>
 ```
 
-    创建一个名为 `<branch-name>` 的新分支。
+创建一个名为 `<branch-name>` 的新分支。
 
 ```bash
 git checkout --orphan <branch-name>
 ```
-	创建一个孤立的，没有任何commit记录的分支
 
+创建一个孤立的，没有任何commit记录的分支
 
 - **切换分支**：
 
 ```bash
-    git checkout <branch-name>
+git checkout <branch-name>
 ```
 
-    切换到名为 `<branch-name>` 的分支。
+切换到名为 `<branch-name>` 的分支。
 
 - **创建并切换到新分支**：
 
 ```bash
-    git checkout -b <branch-name>
+git checkout -b <branch-name>
 ```
 
-    创建一个新分支并立即切换到该分支。
+创建一个新分支并立即切换到该分支。
 
 - **删除分支**：
 
 ```bash
-    git branch -d <branch-name>
+git branch -d <branch-name>
 ```
 
-    删除名为 `<branch-name>` 的分支。
+删除名为 `<branch-name>` 的分支。
 
 - **强制删除分支**：
 
 ```bash
-    git branch -D <branch-name>
+git branch -D <branch-name>
 ```
 
-    强制删除名为 `<branch-name>` 的分支，即使该分支有未合并的更改。
+强制删除名为 `<branch-name>` 的分支，即使该分支有未合并的更改。
 
 - **重命名分支**：
 
 ```bash
-    git branch -m <new-branch-name>
+git branch -m <new-branch-name>
 ```
 
-    将当前分支重命名为 `<new-branch-name>`。
+将当前分支重命名为 `<new-branch-name>`。
 
 - **合并分支**
 
@@ -315,7 +314,7 @@ git branch -r
 git checkout -b <local-branch-name> <remote-name>/<remote-branch-name>
 ```
 
-    从远程仓库 `<remote-name>` 的 `<remote-branch-name>` 分支拉取更新，并创建一个名为 `<local-branch-name>` 的本地分支。
+从远程仓库 `<remote-name>` 的 `<remote-branch-name>` 分支拉取更新，并创建一个名为 `<local-branch-name>` 的本地分支。
 
 
 如果你想同时查看本地和远程的所有分支，可以使用 `git branch -a` 命令
@@ -687,7 +686,6 @@ https://www.cnblogs.com/FraserYu/p/11192840.html
 ---
 
 ### 子模块相关命令
-
 - **添加子模块**：
 
 ```bash
@@ -772,6 +770,42 @@ https://www.cnblogs.com/FraserYu/p/11192840.html
 ```
 
     遍历所有子模块并更新到最新提交。
+
+对于子模块，如何在不删除的情况下把子模块转换为正常的文件夹来管理？
+[[git把子模块文件夹转化为普通文件夹]]
+
+### 删库或清空所有提交
+
+先随便创建一个孤儿分支，假设名字是aa
+```bash
+git checkout --orphan aa
+```
+
+把所有文件提交到这个分支上
+```bash
+git add .
+git commit -m 'clean'
+```
+
+强制删除主分支
+```bash
+git branch -D master
+```
+
+重命名当前分支
+```bash
+git branch -m master
+```
+
+强制推送到远程
+```bash
+git push -f -u origin master
+```
+
+可以部署成自动化脚本
+你会发现远程只有一个commit记录了
+
+删库是一样的道理
 
 
 ## 使用Git自动同步Obsidian配置及仓库
