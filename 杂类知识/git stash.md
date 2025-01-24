@@ -6,43 +6,43 @@
 
 - **保存当前更改**:
 ```bash
-  git stash
+git stash
 ```
   这会将工作目录中的所有未提交更改（已跟踪的文件）保存到栈中，并恢复工作目录到干净的状态。
 
 - **恢复之前的更改**:
 ```bash
-  git stash apply
+git stash apply
 ```
   这会将最近一次保存的更改从栈中应用到当前的工作目录中，但不会移除 `stash` 记录。
 
 - **应用并删除最近的存储**:
 ```bash
-  git stash pop
+git stash pop
 ```
   这会将最近一次保存的更改应用到当前工作目录，并从栈中移除该 `stash`。
 
 - **查看所有存储的更改**:
 ```bash
-  git stash list
+git stash list
 ```
   这会列出所有保存的 `stash` 条目，类似于提交历史记录。
 
 - **查看特定存储的内容**:
 ```bash
-  git stash show <stash@{n}>
+git stash show <stash@{n}>
 ```
   这会显示特定 `stash` 条目的内容差异。
 
 - **删除特定的存储**:
 ```bash
-  git stash drop <stash@{n}>
+git stash drop <stash@{n}>
 ```
   这会删除指定的 `stash` 条目。
 
 - **删除所有存储**:
 ```bash
-  git stash clear
+git stash clear
 ```
   这会删除所有的 `stash` 条目。
 
