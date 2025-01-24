@@ -9,4 +9,6 @@ git rm --cached submodule_path  # 删除指向submodule的引用
 ```
 - 正常add、commit、push即可，发现远程仓库对应的文件夹已不是子模块形式
 
+想彻底删除子模块在这基础上把子模块文件夹也完全删除即可
+
 可以搞成自动化脚本

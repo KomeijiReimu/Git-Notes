@@ -11,9 +11,34 @@ https://blog.csdn.net/qq_54631992/article/details/139185099
 ### 介绍
 
 [Git是什么](https://liaoxuefeng.com/books/git/what-is-git/index.html)
-这篇文章很好地介绍了git 是什么东西。
+这篇文章很好地介绍了git 是什么东西，但是这篇文章有点冗杂了，不用看太多
 
 **需要简单学习一下Git是如何工作的**
+
+### 部署
+
+会用Linux的可能不需要通过我这个教程来学习部署
+
+对于Windows，需要安装git相关工具软件，这样可以执行git命令行
+
+https://git-scm.com/
+选择
+![[Pasted image 20250124144404.png]]
+
+![[Pasted image 20250124144435.png]]
+
+不想使用便携版可以选择上面的标准版下载
+
+安装的时候其实这两个没必要选择，用powershell更好
+![[Pasted image 20250124144830.png]]
+
+下面的所有默认即可
+
+安装完成后在powershell中能使用即可
+![[Pasted image 20250124145316.png]]
+
+如果没有的话怎么办？自己配置环境变量去
+
 
 ### 配置
 
@@ -43,7 +68,7 @@ git config --global --unset user.email
 
 ```
 
-> 配置代理（避免麻烦，还得开Tun模式）
+> 配置代理（避免麻烦，不然还得开Tun模式）
 
 设置代理：
 
@@ -76,6 +101,10 @@ git config --global --unset https.proxy
 ### git clone
 
 把项目拉下来，~~这是最好用的命令~~
+比如
+```bash
+git clone https://github.com/lec-org/Git-Notes.git
+```
 
 ---
 ### 分支相关命令
@@ -154,38 +183,35 @@ git merge <branch_name>
 `git merge` 可能会产生以下几种结果：
 
 1. **Fast-forward 合并**:
-   - 当目标分支的历史直接在线上包含源分支的历史时，Git 会执行“快进”（fast-forward）合并。这样，目标分支的指针会简单地向前移动到源分支的最后一个提交，不会生成新的合并提交。
-   - 这种合并只会在源分支的提交在目标分支的历史中顺延的情况下发生。
 
+Fast-forward 合并发生在目标分支没有新的提交，而源分支有新的提交时。简单来说，目标分支的历史没有分叉，因此 Git 可以通过简单地将目标分支指针“快进”到源分支的最新提交来完成合并。
+- **发生条件**：目标分支和源分支之间没有任何分叉，目标分支指向源分支的祖先提交。
+- **操作**：Git 会将目标分支的指针直接“快进”到源分支的最新提交。
+- **结果**：合并不会创建新的合并提交，目标分支历史会直接包含源分支的提交。
 ```bash
 git merge feature-branch
 ```
-   结果：
-```
-Before: A---B---C---D (main)
-                \
-                E---F (feature-branch)
 
-After:  A---B---C---D---E---F (main, feature-branch)
-```
+效果：
+![[Pasted image 20250124151913.png]]
 
-2. **自动合并**:
-   - 如果两个分支有分歧，Git 会尝试自动合并两者。此时，Git 会创建一个新的合并提交（merge commit），这个提交包含两个父提交：目标分支和源分支。
+但是如果在合并的时候我们想保留来自被合并分支的提交历史，并显式标注出合并发生的位置，那么可以使用`–no-ff`参数进行三路合并
+![[Pasted image 20250124153522.png]]
 
+2. **三路合并（Three-Way Merge模式）**:
+
+三路合并发生在目标分支和源分支有不同的提交时，但没有产生冲突。Git 会自动将两个分支的更改合并在一起，创建一个新的合并提交。
+- **发生条件**：目标分支和源分支之间有不同的提交，且 Git 能够自动合并这些更改。
+- **操作**：Git 会比较两个分支的差异，自动将它们合并。如果没有冲突，Git 会生成一个新的合并提交，表示两个分支的历史合并在一起。
 ```bash
 git merge feature-branch
 ```
-   结果：
-```
-Before: A---B---C (main)
-            \ 
-             D---E (feature-branch)
+   
+效果：
+![[Pasted image 20250124173524.png]]
 
-After:  A---B---C---M (main)
-             \     /
-              D---E (feature-branch)
-```
-   其中，`M` 是合并提交。
+![[Pasted image 20250124174241.png]]
+
 
 3. **合并冲突（Merge Conflict）**:
    - 当 Git 无法自动将更改合并时，会产生合并冲突。这通常发生在两个分支都修改了同一文件的同一部分。Git 会在冲突的文件中标记冲突部分，并停止合并过程，等待你手动解决冲突。
@@ -197,23 +223,6 @@ git merge feature-branch
 git add <resolved_files>
 git commit
 ```
-
-- **`--no-ff`**: 强制生成一个合并提交，即使可以执行 fast-forward 合并。
-  
-```bash
-  git merge --no-ff feature-branch
-```
-  结果：
-```
-  Before: A---B---C---D (main)
-                     \
-                      E---F (feature-branch)
-
-  After:  A---B---C---D---M (main)
-                     \   /
-                      E---F (feature-branch)
-```
-  其中，`M` 是合并提交。
 
 - **`--squash`**: 将源分支的所有提交压缩为一个提交，然后合并到当前分支。这不会自动生成一个合并提交，你需要手动提交。
   
@@ -232,11 +241,6 @@ git commit -m "Squashed merge of feature-branch"
   其中，`S` 是你手动提交的 squashed 合并提交。
 
 - **`--abort`**: 如果在合并过程中发生冲突，并且你决定放弃合并，可以使用 `git merge --abort` 取消合并过程，恢复到合并前的状态。
-
-```bash
-  git merge --abort
-```
-
 
 #### 远程分支操作
 
@@ -276,20 +280,20 @@ git push -u origin test2
 - **`--force` 或 `-f`**：强制推送，会覆盖远程分支的历史记录。使用时需谨慎，因为它会丢失远程分支上的提交记录。
 
 ```bash
-    git push --force origin <branch-name>
+git push --force origin <branch-name>
 ```
 使用场景：你想回滚到某次提交，并且这次提交之后的所有提交都不想要了
 
 - **`--all`**：推送所有本地分支到远程仓库。
   
 ```bash
-    git push --all origin
+git push --all origin
 ```
 
 - **`--tags`**：推送所有本地标签到远程仓库。
   
 ```bash
-    git push --tags origin
+git push --tags origin
 ```
 
 
@@ -327,7 +331,7 @@ git push <remote-name> --delete <branch-name>
 git push <remote-name> -d <branch-name>
 ```
 
-    删除远程仓库 `<remote-name>` 中的 `<branch-name>` 分支。
+删除远程仓库 `<remote-name>` 中的 `<branch-name>` 分支。
 
 >`git branch -d -r origin/xxx` 和 `git push origin -d xxx`的区别： 
 > 
@@ -352,30 +356,28 @@ git push <remote-name> -d <branch-name>
 git fetch
 ```
 
-    从远程仓库获取最新的更新，但不自动合并。
-
+从远程仓库获取最新的更新，但不自动合并。
 
 
 - **拉取远程仓库的更新并合并到当前分支**：
 
 ```bash
-    git pull
+ git pull
 ```
 
-    获取远程仓库的更新并自动合并到当前分支。
+获取远程仓库的更新并自动合并到当前分支。
 
 `git pull`相当于先`git fetch`后再`git merge`
 
-> *关于git pull的时机和pull时产生的冲突问题，有待更新*
+[[git pull|git pull的使用时机及冲突解决]]
 
 - **从远程拉取其他分支**：
-
 
 ```bash
 git fetch origin <branch-name>:<local-branch-name>
 ```
 
-    从远程仓库的 `<branch-name>` 分支拉取更新到本地的 `<local-branch-name>` 分支。
+从远程仓库的 `<branch-name>` 分支拉取更新到本地的 `<local-branch-name>` 分支。
 
 >实际上这个和`git checkout -b <local-branch-name> <remote-name>/<remote-branch-name>`的区别就是获取之后是否切换到相应分支。
 ---
@@ -387,7 +389,7 @@ git fetch origin <branch-name>:<local-branch-name>
 git add <file-name>
 ```
 
-    将 `<file-name>` 文件添加到暂存区。
+将 `<file-name>` 文件添加到暂存区。
 
 你可以一次性添加多个文件到暂存区。
 
@@ -398,42 +400,42 @@ git add file1 file2 file3
 - **提交更改**：
 
 ```bash
-    git commit -m "commit message"
+git commit -m "commit message"
 ```
 
-    提交暂存区的更改，并添加提交信息。
+提交暂存区的更改，并添加提交信息。
 
 - **修改最近一次提交的信息**：
 
 ```bash
-    git commit --amend -m "new commit message"
+git commit --amend -m "new commit message"
 ```
 
-    修改最近一次提交的信息。
+修改最近一次提交的信息。
 
 - **推送到远程仓库**：
 
 ```bash
-    git push
+git push
 ```
 
-    将本地分支的更改推送到远程仓库。
+将本地分支的更改推送到远程仓库。
 
 - **推送到指定的远程仓库和分支**：
 
 ```bash
-    git push <remote-name> <branch-name>
+git push <remote-name> <branch-name>
 ```
 
-    将本地 `<branch-name>` 分支的更改推送到远程仓库 `<remote-name>`。
+将本地 `<branch-name>` 分支的更改推送到远程仓库 `<remote-name>`。
 
 - **强制推送到远程仓库**：
 
 ```bash
-    git push <remote-name> <branch-name> --force
+git push <remote-name> <branch-name> --force
 ```
 
-    强制将本地 `<branch-name>` 分支的更改推送到远程仓库 `<remote-name>`，覆盖远程分支的内容。
+强制将本地 `<branch-name>` 分支的更改推送到远程仓库 `<remote-name>`，覆盖远程分支的内容。
 
 ---
 ### 回滚和撤销
@@ -465,45 +467,52 @@ git reset HEAD
 - **回滚到上一个提交**：
 
 ```bash
-    git reset --hard HEAD^
+git reset --hard HEAD^
 ```
 
-    回滚到上一个提交，丢弃所有更改。
+回滚到上一个提交，丢弃所有更改。
 
 - **回滚到指定提交**：
 
 ```bash
-    git reset --hard <commit-hash>
+git reset --hard <commit-hash>
 ```
 
-    回滚到指定的提交 `<commit-hash>`，丢弃所有更改。
+回滚到指定的提交 `<commit-hash>`，丢弃所有更改。
 
 *如何查看commit的hash？[[git log和git reflog|试试这个]]*
 
+- **查看指定历史版本**
+
+```bash
+git checkout <commit-hash>
+```
+
+此时，你会切换到一个 "detached HEAD" 状态，意味着你不再处于当前的分支，而是查看指定提交的内容。此时的工作目录会变为该提交时的快照，你可以查看、编辑文件，但不会影响当前分支的状态
 
 - **撤销最近一次提交，但保留更改**：
 
 ```bash
-    git reset --soft HEAD^
+git reset --soft HEAD^
 ```
 
-    撤销最近一次提交，但保留更改在暂存区。
+撤销最近一次提交，但保留更改在暂存区。
 
 - **撤销最近一次提交并将更改移动到工作目录**：
 
 ```bash
-    git reset HEAD^
+git reset HEAD^
 ```
 
-    撤销最近一次提交，并将更改移动到工作目录。
+撤销最近一次提交，并将更改移动到工作目录。
 
 - **取消提交但保留更改**：
 
 ```bash
-    git reset --mixed HEAD^
+git reset --mixed HEAD^
 ```
 
-    撤销最近一次提交，但保留更改在工作目录中。
+撤销最近一次提交，但保留更改在工作目录中。
 
 
 > *相关参数的解释：*
@@ -522,10 +531,10 @@ git reset HEAD
 - **撤销最近一次推送**：
 
 ```bash
-    git revert <commit-hash>
+git revert <commit-hash>
 ```
 
-    创建一个新的提交来撤销指定的提交 `<commit-hash>`。
+创建一个新的提交来撤销指定的提交 `<commit-hash>`。
 
 
 在Git中，回滚操作的结果取决于你使用的具体命令和参数。以下是几种常见的回滚方式及其影响：
@@ -546,117 +555,83 @@ git reset HEAD
    
     - 如果你误用了`git reset --hard`，可以使用`git reflog`查看HEAD的历史记录，然后使用`git reset --hard <reflog-id>`恢复到之前的状态
 
+
+- **将特定文件回滚到特定版本**
+
+用`git log`确定版本后
+```bash
+git checkout <commit-id> -- <file-path>
+```
+
+
 ---
-### 远程相关命令
+
+### 其他常用命令
 
 - **查看远程仓库**：
 
-
-
 ```bash
-    git remote -v
+git remote -v
 ```
 
-    显示所有远程仓库的详细信息。
-
-- **添加远程仓库**：
-
-```bash
-    git remote add <remote-name> <remote-url>
-```
-
-    添加一个新的远程仓库，命名为 `<remote-name>`，URL 为 `<remote-url>`。
-
-- **删除远程仓库**：
-
-```bash
-    git remote remove <remote-name>
-```
-
-    删除名为 `<remote-name>` 的远程仓库。
-
-- **重命名远程仓库**：
-
-```bash
-    git remote rename <old-name> <new-name>
-```
-
-    将远程仓库从 `<old-name>` 重命名为 `<new-name>`。
-
-- **获取远程仓库的更新**：
-
-```bash
-    git fetch <remote-name>
-```
-
-    从名为 `<remote-name>` 的远程仓库获取更新。
-
----
-### 其他常用命令
+显示所有远程仓库的详细信息。
 
 - **查看文件状态**：
 
 ```bash
-    git status
+ git status
 ```
 
-    显示工作目录和暂存区的状态。
+显示工作目录和暂存区的状态。
 
-- **合并远程分支到本地分支**：
-
-```bash
-    git merge <remote-name>/<branch-name>
-```
-
-    将远程仓库 `<remote-name>` 的 `<branch-name>` 分支合并到当前本地分支。
 
 - **查看某个提交的详细信息**：
 
 ```bash
-    git show <commit-hash>
+git show <commit-hash>
 ```
 
-    显示指定提交 `<commit-hash>` 的详细信息。
+显示指定提交 `<commit-hash>` 的详细信息。
 
 - **比较两个分支的差异**：
 
 ```bash
-    git diff <branch1> <branch2>
+git diff <branch1> <branch2>
 ```
 
-    比较 `<branch1>` 和 `<branch2>` 分支的差异。
+比较 `<branch1>` 和 `<branch2>` 分支的差异。
 
 - **暂存当前更改**：
 
 ```bash
-    git stash
+git stash
 ```
 
-    暂存当前工作目录的更改。
+暂存当前工作目录的更改。
 
 - **应用暂存的更改**：
 
 ```bash
-    git stash apply
+git stash apply
 ```
 
-    应用最近一次暂存的更改。
+应用最近一次暂存的更改。
 
 - **查看暂存的更改列表**：
 
 ```bash
-    git stash list
+git stash list
 ```
 
-    显示所有暂存的更改。
+显示所有暂存的更改。
 
 - **丢弃所有暂存的更改**：
 
 ```bash
-    git stash clear
+git stash clear
 ```
 
-    丢弃所有存储的暂存更改。
+丢弃所有存储的暂存更改。
 
 [[git stash|更多关于暂存操作的内容，请阅读]]
 
@@ -689,89 +664,62 @@ https://www.cnblogs.com/FraserYu/p/11192840.html
 - **添加子模块**：
 
 ```bash
-    git submodule add <repository-url> <path>
+git submodule add <repository-url> <path>
 ```
 
-    将子模块仓库添加到当前仓库中，路径为 `<path>`。
+将子模块仓库添加到当前仓库中，路径为 `<path>`。
 
 - **初始化子模块**：
 
 ```bash
-    git submodule init
+git submodule init
 ```
 
-    初始化子模块，这通常在克隆包含子模块的仓库后进行。
+初始化子模块，这通常在克隆包含子模块的仓库后进行。
 
 - **更新子模块**：
 
 ```bash
-    git submodule update
+git submodule update
 ```
 
-    更新子模块到配置文件中记录的最新提交。
+更新子模块到配置文件中记录的最新提交。
 
 - **克隆包含子模块的仓库**：
 
 ```bash
-    git clone --recurse-submodules <repository-url>
+git clone --recurse-submodules <repository-url>
 ```
 
-    克隆包含子模块的仓库，并同时克隆所有子模块。
+克隆包含子模块的仓库，并同时克隆所有子模块。
 
 - **查看子模块状态**：
 
 ```bash
-    git submodule status
+git submodule status
 ```
 
-    显示当前子模块的状态，包括子模块的 SHA-1 值和路径。
+显示当前子模块的状态，包括子模块的 SHA-1 值和路径。
 
 - **更新子模块到最新提交**：
 
 ```bash
-    git submodule update --remote
+git submodule update --remote
 ```
 
-    更新子模块到远程仓库的最新提交。
+更新子模块到远程仓库的最新提交。
 
 > NOTE:这个命令虽然会更新子模块，但是导致子模块的头指针分离，这一点需要注意
-
-- **删除子模块**：
-
-    1. 从 `.gitmodules` 文件中移除子模块条目。
-    
-```bash
-        git config -f .gitmodules --remove-section submodule.<path>
-```
-
-    2. 从 `.git/config` 文件中移除子模块条目。
-
-```bash
-        git config -f .git/config --remove-section submodule.<path>
-```
-
-    3. 删除子模块目录并移除暂存区的子模块。
-
-```bash
-        git rm --cached <path>
-        rm -rf <path>
-```
-
-    4. 提交更改。
-
-```bash
-        git commit -m "Removed submodule <path>"
-```
 
 - **更新所有子模块**：
 
 ```bash
-    git submodule foreach git pull origin master
+git submodule foreach git pull origin master
 ```
 
-    遍历所有子模块并更新到最新提交。
+遍历所有子模块并更新到最新提交。
 
-对于子模块，如何在不删除的情况下把子模块转换为正常的文件夹来管理？
+删除子模块和把子模块转换为普通文件夹
 [[git把子模块文件夹转化为普通文件夹]]
 
 ### 删库或清空所有提交
@@ -862,6 +810,15 @@ git config --global --add safe.directory "*"
 
 曾经Github的主分支名字叫**master**，后来改名叫**main**了，原因为何，可以搜索一下。
 
+## 可视化操作
+
+很多软件都能实现，比如vscode、idea等
+
+这里推荐
+https://github.com/gitextensions/gitextensions
+可以可视化查看提交历史，还可以实现单个文件的版本比较等操作
+
+不过感觉用熟悉命令行后再用这个软件才感觉到便捷一点
 # 后记
 
 本文档乃速成之作，为了方便使用git命令行所著，现投递到公共仓库中，各位可以fork之后提交pull request，以此来完善此文。
