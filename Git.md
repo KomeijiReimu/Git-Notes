@@ -818,7 +818,7 @@ git config --global --add safe.directory "*"
 https://github.com/gitextensions/gitextensions
 可以可视化查看提交历史，还可以实现单个文件的版本比较等操作
 
-不过感觉用熟悉命令行后再用这个软件才感觉到便捷一点
+不过感觉用熟悉命令行后再用这个软件才感觉到便捷一点，但是最终感觉还是命令行比较方便
 # 后记
 
 本文档乃速成之作，为了方便使用git命令行所著，现投递到公共仓库中，各位可以fork之后提交pull request，以此来完善此文。
