@@ -8,6 +8,9 @@
 本文档使用 `Obsidian` 编写，使用 `Obsidian` 可获得最佳体验，同时本文档所在仓库包含该软件的配置文件，拉下来后即可体验和我一样的配置、主题和插件。
 https://blog.csdn.net/qq_54631992/article/details/139185099
 
+---
+
+
 ### 介绍
 
 [Git是什么](https://liaoxuefeng.com/books/git/what-is-git/index.html)
@@ -15,9 +18,11 @@ https://blog.csdn.net/qq_54631992/article/details/139185099
 
 **需要简单学习一下 Git 是如何工作的**
 
-### 部署
+---
 
-会用 Linux 的可能不需要通过我这个教程来学习部署
+### Windows 下使用
+
+#### 部署
 
 对于Windows，需要安装git相关工具软件，这样可以执行git命令行
 
@@ -40,19 +45,20 @@ https://git-scm.com/
 如果没有的话怎么办？自己配置环境变量去
 
 ---
-### 配置
+#### 配置
 
 github 是使用 git 管理的代码托管社区，除了 github 之外还有 gitlab，中国的 github 之类的的，当然也可以搭建私人的"github"。
 最有名的就是 github，因此想要学会 git，首先得学会配置 github。
 
 https://blog.csdn.net/EliasChang/article/details/136561863
-这篇文章讲述了如何安装 git 和如何配置 github，这里补充两点：
+这篇文章讲述了如何安装 git 和如何配置 github，为了方便，**看完 `一、Github初始设置` 即可**。这里补充两点：
 
 1. 在本地用命令行时，不必非得使用git的命令行工具gitbash，可以添加环境变量后使用Windows自带的`powershell`
+
 2. 在配置 Github 时，很多教程都要求设置 SSH 秘钥，配置 SSH 连接，这个其实没必要，因为用起来不太方便，而且代理环境下 SSH 还很慢 ~~*愿意也可以设置*~~
     - Windows 下，SSH 生成的秘钥保存在电脑 `C:\Users\用户名\.ssh` 中，不做特殊保护，容易被他人持有，不安全。用 https 连接登录后令牌保存在 Windows 凭据管理器中，相对安全。
 
-> 快速配置 Config：
+**快速配置 Config：**
 ```bash
 git config --global user.name "github上注册的用户名" # 配置用户名
 git config --global user.email "github上注册的邮箱" # 配置用户邮箱
@@ -66,10 +72,7 @@ git config --global --unset user.email
 
 ```
 
-> 配置代理（避免麻烦，不然还得开 Tun 模式）
-
-设置代理：
-
+**配置代理以快速连接 github：**
 ```bash
 //http || https (换成本机的代理服务地址)
 git config --global http.proxy 127.0.0.1:7897
@@ -90,12 +93,22 @@ git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
 
+*如果想使用 SSH，那么需要在 SSH 的配置中额外设置代理*
+#todo
+
+---
+### Linux 下使用
+
+*见后文 SSH 代理*
+#todo
+
 ---
 
-## Linux 下使用
+## 快速上手
 
 
 
+---
 ## Git 分支和远程操作指南
 
 ### git clone
@@ -735,6 +748,28 @@ git submodule foreach git pull origin master
 
 在确保像本文档开头“配置”一栏那样设置过可靠的代理后，请继续阅读：
 [[git clone或push速度过慢]]
+
+---
+### 配置 SSH 代理
+
+在无 GUI 的一些系统中，可能有人偏好于使用 SSH 与远程仓库进行连接。但是由于 SSH 传输速度相比 Https 来说过于缓慢，因此建议仍然使用 Https，使用方法如下。
+
+如果一定要使用 SSH，前文提到的配置 git 代理不对 SSH 生效，因此需要在 SSH 的配置中额外进行代理设置。
+
+在根目录的 `.ssh` 文件夹中，新建文件 `config`：
+```json
+Host github.com
+        Hostname ssh.github.com
+        Port 443
+        User git
+        ProxyCommand nc -v -x 127.0.0.1:7897 %h %p
+```
+
+SSH 会利用 Netcat 建立一个隧道，并使用 SOCKS5 协议连接代理。
+
+---
+
+### 
 
 ### 出现 detected dubious ownership
 
