@@ -1,6 +1,5 @@
 # Git备忘录
 
-
 ## 引入
 
 *`Obsidian` > `Typora`*
@@ -9,8 +8,6 @@
 https://blog.csdn.net/qq_54631992/article/details/139185099
 
 ---
-
-
 ### 介绍
 
 [Git是什么](https://liaoxuefeng.com/books/git/what-is-git/index.html)
@@ -55,7 +52,7 @@ https://blog.csdn.net/EliasChang/article/details/136561863
 
 1. 在本地用命令行时，不必非得使用git的命令行工具gitbash，可以添加环境变量后使用Windows自带的`powershell`
 
-2. 在配置 Github 时，很多教程都要求设置 SSH 秘钥，配置 SSH 连接，这个其实没必要，因为用起来不太方便，而且代理环境下 SSH 还很慢 ~~*愿意也可以设置*~~
+2. git 通常有两种网络通信模式，一个是 Http/Https，另一个是 SSH。在配置 Github 时，很多教程都要求设置 SSH 秘钥，配置 SSH 连接，这个其实没必要，用 Https 就行，因为 SSH 用起来不太方便，而且代理环境下 SSH 还很慢 ~~*愿意也可以设置*~~
     - Windows 下，SSH 生成的秘钥保存在电脑 `C:\Users\用户名\.ssh` 中，不做特殊保护，容易被他人持有，不安全。用 https 连接登录后令牌保存在 Windows 凭据管理器中，相对安全。
 
 **快速配置 Config：**
@@ -93,20 +90,17 @@ git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
 
-*如果想使用 SSH，那么需要在 SSH 的配置中额外设置代理*
-#todo
+*如果想使用 SSH，该配置不会影响 SSH，需要在 SSH 的配置中[[#配置 SSH 代理|额外设置代理]]*
 
 ---
 ### Linux 下使用
 
-*见后文 SSH 代理*
-#todo
+对于无 GUI 的 Linux，由于 Github 现在禁止使用用户名和密码进行验证，因此多选择使用 SSH 连接。
+
+但是 SSH 传输速度过慢，为了避免这种情况，可以[[#使用令牌认证 Http/Https 连接|通过令牌进行验证]]来使用 Https 连接。
 
 ---
-
 ## 快速上手
-
-
 
 ---
 ## Git 分支和远程操作指南
@@ -752,7 +746,7 @@ git submodule foreach git pull origin master
 ---
 ### 配置 SSH 代理
 
-在无 GUI 的一些系统中，可能有人偏好于使用 SSH 与远程仓库进行连接。但是由于 SSH 传输速度相比 Https 来说过于缓慢，因此建议仍然使用 Https，使用方法如下。
+在无 GUI 的一些系统中，可能有人偏好于使用 SSH 与远程仓库进行连接。但是由于 SSH 传输速度相比 Https 来说过于缓慢，因此建议仍然使用 Https，使用方法[[#使用令牌认证 Http/Https 连接|如下]]。
 
 如果一定要使用 SSH，前文提到的配置 git 代理不对 SSH 生效，因此需要在 SSH 的配置中额外进行代理设置。
 
@@ -768,9 +762,29 @@ Host github.com
 SSH 会利用 Netcat 建立一个隧道，并使用 SOCKS5 协议连接代理。
 
 ---
+### 使用令牌认证 Http/Https 连接
 
-### 
+> [!quote] 
+> 自 2021 年 8 月起，GitHub 已禁用账号密码认证，推送或拉取代码时输入的“密码”已不再是登录密码，而是 Personal Access Token（PAT） 或使用 SSH 免密认证。
 
+1. 去这里获取一个令牌（为了方便，旧版 classic 的即可，新版提供了更细化的权限控制）
+
+https://github.com/settings/tokens
+
+在终端中输入命令：
+```bash
+git config --global credential.helper store
+```
+
+将验证后的账号和令牌以明文形式存在用户主目录下的 `.git-credentials` 中。注意妥善保管，避免被其他程序读取。
+
+2. 触发验证并输入令牌
+
+随便执行一个需要权限验证的联网操作，比如在自己的私有库中执行 push 等， git 就会提示输入用户名和密码。
+
+输入 password 时，不要输密码，把刚才获取的令牌直接粘贴过去回车即可。
+
+---
 ### 出现 detected dubious ownership
 
 ```
@@ -784,7 +798,7 @@ To add an exception for this directory, call:
         git config --global --add safe.directory 'xxx'
 ```
 
-在Windows中，发生过这种问题，在这种情况下，一切对本地仓库的操作都会被阻止。
+在 Windows 中发生过这种问题，在这种情况下，一切对本地仓库的操作都会被阻止。
 这是因为仓库文件夹的**所有者**发生了变化。
 
 可以按照提示对相应文件夹进行临时解决，一劳永逸的方法是：
@@ -793,11 +807,17 @@ git config --global --add safe.directory "*"
 ```
 
 ---
+### 出现 SSL 相关报错
 
+发生在 Windows 中，更换 SSL/TLS 实现库为 openssl 即可：
+```powershell
+git config --global http.sslBackend openssl
+```
 
+---
 ## 轶事
 
-曾经Github的主分支名字叫**master**，后来改名叫**main**了，原因为何，可以搜索一下。
+曾经Github的主分支名字叫 **master**，后来改名叫 **main** 了，原因为何，可以搜索一下。
 
 ## 可视化操作
 

@@ -25,7 +25,7 @@ netsh interface tcp set global autotuninglevel=disabled # 这个默认好像就�
 netsh interface tcp set heuristics enabled
 ```
 
-*有些报道也提到使用ssh协议会快一点，有待验证*
+*有些报道也提到使用 ssh 协议会快一点，有待验证*
 
 参考：
 https://superuser.com/questions/1508188/extremely-slow-git-clone-on-windows
