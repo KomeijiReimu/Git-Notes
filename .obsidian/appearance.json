@@ -6,5 +6,9 @@
   "nativeMenus": false,
   "cssTheme": "Border",
   "baseFontSize": 16,
-  "showRibbon": true
+  "showRibbon": true,
+  "enabledCssSnippets": [
+    "print-dark-test",
+    "print-keep-theme"
+  ]
 }

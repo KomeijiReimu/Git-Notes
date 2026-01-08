@@ -1,6 +1,5 @@
 {
   "Appearance-dark@@card-layout-open-dark": false,
-  "Appearance-dark@@theme-dark-style-select": "theme-dark-background-darker",
   "Plugin@@Projects-bg-color": "Projects-bg-color-default",
   "Components@@CTA-BTN-enable": false,
   "Components@@file-names-untrim": false,
@@ -13,10 +12,16 @@
   "Appearance-dark@@card-highlight-dark": false,
   "Appearance-dark@@workspace-divider-transparent-dark": false,
   "Editor@@line-hover-indicator": false,
-  "Editor@@codeblock-style-select": "codeblock-style-customize",
   "Editor@@code-normal@@dark": "#D7D4A6",
   "Editor@@code-comment@@dark": "#58BA5DCC",
   "Editor@@code-function@@dark": "#65A3D1",
   "Editor@@zoom-off": true,
-  "Editor@@file-line-width": "1250px"
+  "Editor@@file-line-width": "1250px",
+  "Appearance-dark@@accent-color-override-dark": false,
+  "Appearance-dark@@background-underlying-select-dark": "background-underlying-default-dark",
+  "Appearance-dark@@theme-dark-style-select": "theme-dark-background-default",
+  "Plugin@@colorful-checkbox": false,
+  "Editor@@focus-indicator-codeblock-line-number": true,
+  "Editor@@focus-indicator-list-level": true,
+  "Editor@@codeblock-style-select": "codeblock-style-customize"
 }

@@ -3,10 +3,11 @@
   "obsidian-style-settings",
   "mousewheel-image-zoom",
   "obsidian-image-toolkit",
-  "obsidian-enhancing-export",
   "obsidian-git",
   "obsidian-version-history-diff",
   "obsidian-latex-suite",
   "easy-typing-obsidian",
-  "advanced-cursors"
+  "advanced-cursors",
+  "obsidian-asm-syntax-highlight",
+  "better-export-pdf"
 ]

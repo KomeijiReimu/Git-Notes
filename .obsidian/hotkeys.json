@@ -24,25 +24,7 @@
     }
   ],
   "easy-typing-obsidian:easy-typing-paste-without-format": [],
-  "editor:open-link-in-new-leaf": [],
-  "advanced-cursors:add-cursor-above": [
-    {
-      "modifiers": [
-        "Alt",
-        "Mod"
-      ],
-      "key": "ArrowUp"
-    }
-  ],
-  "advanced-cursors:add-cursor-below": [
-    {
-      "modifiers": [
-        "Alt",
-        "Mod"
-      ],
-      "key": "ArrowDown"
-    }
-  ],
+  "easy-typing-obsidian:easy-typing-format-switch": [],
   "advanced-cursors:add-next-match-to-selections": [
     {
       "modifiers": [
@@ -69,5 +51,24 @@
       ],
       "key": "ArrowUp"
     }
-  ]
+  ],
+  "advanced-cursors:add-cursor-above": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "ArrowUp"
+    }
+  ],
+  "advanced-cursors:add-cursor-below": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "ArrowDown"
+    }
+  ],
+  "editor:open-link-in-new-leaf": []
 }

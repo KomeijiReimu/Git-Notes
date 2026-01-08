@@ -5,19 +5,19 @@
 
 *`Obsidian` > `Typora`*
 
-本文档使用`Obsidian`编写，使用`Obsidian`可获得最佳体验，同时本文档所在仓库包含该软件的配置文件，拉下来后即可体验和我一样的配置、主题和插件。
+本文档使用 `Obsidian` 编写，使用 `Obsidian` 可获得最佳体验，同时本文档所在仓库包含该软件的配置文件，拉下来后即可体验和我一样的配置、主题和插件。
 https://blog.csdn.net/qq_54631992/article/details/139185099
 
 ### 介绍
 
 [Git是什么](https://liaoxuefeng.com/books/git/what-is-git/index.html)
-这篇文章很好地介绍了git 是什么东西，但是这篇文章有点冗杂了，不用看太多
+这篇文章很好地介绍了 git 是什么东西，但是这篇文章有点冗杂了，不用看太多
 
-**需要简单学习一下Git是如何工作的**
+**需要简单学习一下 Git 是如何工作的**
 
 ### 部署
 
-会用Linux的可能不需要通过我这个教程来学习部署
+会用 Linux 的可能不需要通过我这个教程来学习部署
 
 对于Windows，需要安装git相关工具软件，这样可以执行git命令行
 
@@ -29,32 +29,30 @@ https://git-scm.com/
 
 不想使用便携版可以选择上面的标准版下载
 
-安装的时候其实这两个没必要选择，用powershell更好
+安装的时候其实这两个没必要选择，用 powershell 更好
 ![[Pasted image 20250124144830.png]]
 
 下面的所有默认即可
 
-安装完成后在powershell中能使用即可
+安装完成后在 powershell 中能使用即可
 ![[Pasted image 20250124145316.png]]
 
 如果没有的话怎么办？自己配置环境变量去
 
-
+---
 ### 配置
 
-github是使用git管理的代码托管社区，除了github之外还有gitlab，中国的github之类的的，当然也可以搭建私人的"github"。
-最有名的就是github，因此想要学会git，首先得学会配置github。
+github 是使用 git 管理的代码托管社区，除了 github 之外还有 gitlab，中国的 github 之类的的，当然也可以搭建私人的"github"。
+最有名的就是 github，因此想要学会 git，首先得学会配置 github。
 
 https://blog.csdn.net/EliasChang/article/details/136561863
-这篇文章讲述了如何安装git和如何配置github，这里补充两点：
+这篇文章讲述了如何安装 git 和如何配置 github，这里补充两点：
 
 1. 在本地用命令行时，不必非得使用git的命令行工具gitbash，可以添加环境变量后使用Windows自带的`powershell`
-2. 在配置Github时，很多教程都要求设置SSH秘钥，配置SSH连接，这个其实没必要，因为用起来不太方便。~~*愿意也可以设置*~~
-    - 用SSH生成公钥与私钥其实相当于用个人电脑生成了一张身份证，之后连接Github只要有这张身份证就不用输入用户名和密码，看起来很方便，但是如果用纯SSH搞一个开源项目，那你赶紧忙着去邀请八方来客吧，不然连clone的权限都没有。
-    - SSH生成的秘钥保存在电脑`C:\Users\用户名\.ssh`中，不做特殊保护，容易被他人持有，不安全。用Http连接配置完用户名和邮箱后会弹出登录窗口，登录后令牌保存在Windows凭据管理器中，相对安全。
+2. 在配置 Github 时，很多教程都要求设置 SSH 秘钥，配置 SSH 连接，这个其实没必要，因为用起来不太方便，而且代理环境下 SSH 还很慢 ~~*愿意也可以设置*~~
+    - Windows 下，SSH 生成的秘钥保存在电脑 `C:\Users\用户名\.ssh` 中，不做特殊保护，容易被他人持有，不安全。用 https 连接登录后令牌保存在 Windows 凭据管理器中，相对安全。
 
-
-> 快速配置Config：
+> 快速配置 Config：
 ```bash
 git config --global user.name "github上注册的用户名" # 配置用户名
 git config --global user.email "github上注册的邮箱" # 配置用户邮箱
@@ -68,7 +66,7 @@ git config --global --unset user.email
 
 ```
 
-> 配置代理（避免麻烦，不然还得开Tun模式）
+> 配置代理（避免麻烦，不然还得开 Tun 模式）
 
 设置代理：
 
@@ -76,10 +74,6 @@ git config --global --unset user.email
 //http || https (换成本机的代理服务地址)
 git config --global http.proxy 127.0.0.1:7897
 git config --global https.proxy 127.0.0.1:7897
-
-//sock5代理
-git config --global http.proxy socks5 127.0.0.1:7891
-git config --global https.proxy socks5 127.0.0.1:7891
 ```
 
 查看代理：
@@ -97,6 +91,11 @@ git config --global --unset https.proxy
 ```
 
 ---
+
+## Linux 下使用
+
+
+
 ## Git 分支和远程操作指南
 
 ### git clone
@@ -243,6 +242,7 @@ git commit -m "Squashed merge of feature-branch"
 
 - **`--abort`**: 如果在合并过程中发生冲突，并且你决定放弃合并，可以使用 `git merge --abort` 取消合并过程，恢复到合并前的状态。
 
+---
 #### 远程分支操作
 
 - **推送本地分支到远程**
