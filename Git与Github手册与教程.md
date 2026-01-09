@@ -764,6 +764,8 @@ SSH 会利用 Netcat 建立一个隧道，并使用 SOCKS5 协议连接代理。
 ---
 ### 使用令牌认证 Http/Https 连接
 
+由于代理环境下使用 SSH 连接 Github 时传输速率过慢，因此我们优先选用 Https。
+
 > [!quote] 
 > 自 2021 年 8 月起，GitHub 已禁用账号密码认证，推送或拉取代码时输入的“密码”已不再是登录密码，而是 Personal Access Token（PAT） 或使用 SSH 免密认证。
 
@@ -776,13 +778,13 @@ https://github.com/settings/tokens
 git config --global credential.helper store
 ```
 
-将验证后的账号和令牌以明文形式存在用户主目录下的 `.git-credentials` 中。注意妥善保管，避免被其他程序读取。
+将验证后的账号和令牌以**明文**形式存在用户主目录下的 `.git-credentials` 中。注意**妥善保管，避免被其他程序读取**。
 
 2. 触发验证并输入令牌
 
-随便执行一个需要权限验证的联网操作，比如在自己的私有库中执行 push 等， git 就会提示输入用户名和密码。
+随便执行一个需要权限验证的联网操作，比如在自己的私有库中执行 `push` 等， git 就会提示输入用户名和密码。
 
-输入 password 时，不要输密码，把刚才获取的令牌直接粘贴过去回车即可。
+输入 password 时，不要输密码，把**刚才获取的令牌直接粘贴**过去回车即可。
 
 ---
 ### 出现 detected dubious ownership
